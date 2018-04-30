@@ -1,219 +1,45 @@
-<!DOCTYPE HTML>
 <html><head>
-    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
-    <script src="https://apps.bdimg.com/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
-    <script src="./ctrl.js"></script>
-    <script>
-      $(function() {
-        // $( "#sky" ).draggable();
-        // draggable example
-      });
-    </script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<style type="text/css">
+		.drop-shadow {
+		    -webkit-filter: drop-shadow(0px 0px 7px rgba(0, 0, 0, 0.7));
+		    filter: drop-shadow(0px 0px 7px rgba(0, 0, 0, 0.7))
+		}
+	</style>
+	<script>
+		function moveShadow(e) {
+		    let mouse_x = e.clientX;
+		    let mouse_y = e.clientY;
+		    $("#mousepos").text("x = " + mouse_x + ", y = " + mouse_y);
+
+		    $('.drop-shadow').each(function(){
+		    	let this_x = parseInt($(this).css("left"));
+		    	let this_y = parseInt($(this).css("top"));
+		    	let dx = mouse_x - this_x;
+		    	let dy = mouse_y - this_y;
+		    	$("#dbg").text("drop-shadow(" + dx/50 + "px " + dy/50 + "px 7px rgba(0, 0, 0, 0.7))");
+		    	$(this).css({
+			    	"-webkit-filter" : "drop-shadow(" + dx/50 + "px " + dy/50 + "px 7px rgba(0, 0, 0, 0.7))",
+			    	"filter" : "drop-shadow(" + dx/50 + "px " + dy/50 + "px 7px rgba(0, 0, 0, 0.7))"
+			    });
+		    });
+		}
+	</script>
 </head>
-<body style="width: 100vw; height: 100vh; margin: 0px; overflow: hidden;" scroll="no">
-    <div id="sky" style="
-    width: 100%;
-    height: 50%;
-    display: inline-block;
-    background-color: white;
-">
-    <audio controls="" style="display: none;" id="audio"><source src="./music/midhouse.mp3" type="audio/mpeg" id="audiosrc">Your browser does not support the audio element.</audio>
 
-    <img src="./text_pics/title.png" style="
-    width: 12.5%;
-    margin-left: 25px;
-    margin-top: 25px;
-    position: absolute;
-">
-    <img src="./object_pics/cloud1.png" style="
-    width: 25%;
-    margin-left: 5%;
-    margin-top: 10%;
-    position: absolute;
-">
-    
-    <div id="record_container" style="position: absolute;width: 14%;height: 42.3%;margin-top: 14.3%;margin-left: 30.3%;display: none;opacity: 0;">
-        <img id="record" src="./object_pics/record.png" style="position: absolute;width: 100%;">
-        <a id="record_a" onclick="moveRecord(); hideClouds(); showLyrics();" style="height: 100%;width: 100%;bottom: 0px;position: absolute;" href="#"></a>
-    </div>
-    <div id="recorder_container" style="position: absolute;width: 18%;height: 37%;margin-top: 5%;margin-left: 45%;">
-        <img id="recorder" src="./object_pics/recorder.png" style="position: absolute;width: 100%;">
-        <a id="recorder_a" onclick="toggleMusic();" style="height: 100%;width: 100%;bottom: 0px;position: absolute;" href="#"></a>
-    </div>
-
-    <div id="skyright" style="
-    width: 35%;
-    height: 90%;
-    display: inline-block;
-    background-color: white;
-    margin-left: 65%;
-">
-        <img class="cloud" src="./object_pics/cloud2.png" style="
-        width: 25%;
-        margin-left: 5%;
-        margin-top: 3%;
-        position: absolute;
-    ">
-        <img class="cloud" src="./object_pics/cloud3.png" style="
-        width: 25%;
-        margin-left: 5%;
-        margin-top: 12.5%;
-        position: absolute;
-    ">
-
-        <div id="lyricsbox" class="lyrics" style="
-        width: 30%;
-        height: 25%;
-        margin-top: 3%;
-        position: absolute;
-        display: none;
-        opacity: 0;
-        overflow-y: scroll;
-    ">
-            <p id="lyrics_text">
-                多少柔情多少淚　往事如煙去不回<br/>
-                想起過去多少歡樂　如今已隨流水<br/>
-                <br/>
-                多少柔情多少淚　良辰美景去不回<br/>
-                剩下一片迷離夢靜　夢醒時更悲哀<br/>
-                <br/>
-                多情的夢　愛情的夢　如今已消逝<br/>
-                愛情的花　愛情的花　如已枯萎<br/>
-                <br/>
-                多少柔情多少淚　淚已流乾心已碎<br/>
-                長夜漫漫往事如煙　如今獨自沉醉<br/>
-                <br/>
-                多少柔情多少淚
-            </p>
-
-        </div>
-        <div id="viewstory" class="lyrics" style="position: absolute;width: 150px;height: 30px;margin-top: 20%;display: none;opacity: 0;">
-            <img src="./text_pics/viewstory.png" style="position: absolute;height: 100%;">
-            <a id="viewstory_a" onclick="hideHouses(); showStory();" style="height: 100%;width: 100%;bottom: 0px;position: absolute;" href="#"></a>
-        </div>
-        <div id="favorite" class="lyrics" style="position: absolute;width: 81px;height: 30px;margin-top: 20%;margin-left: 13%;display: none;opacity: 0;">
-            <img src="./text_pics/favorite.png" style="position: absolute;height: 100%;">
-            <a id="favorite_a" onclick="" style="height: 100%;width: 100%;bottom: 0px;position: absolute;" href="#"></a>
-        </div>
-        <div id="back" class="lyrics" style="position: absolute;width: 106px;height: 30px;margin-top: 20%;margin-left: 22%;display: none;opacity: 0;">
-            <img src="./text_pics/back.png" style="position: absolute;height: 100%;">
-            <a id="back_a" onclick="hideStory(); showHouses();" style="height: 100%;width: 100%;bottom: 0px;position: absolute;" href="#"></a>
-        </div>
-    </div>
-
-    </div>
-    <div id="street" style="
-    width: 100%;
-    height: 42.5%;
-    display: inline-block;
-    margin-bottom: 2.5%;
-    position: absolute;
-    bottom: 0px;
-">
-    <div id="lefthouse_container" onclick="changeMusic('left');changeStory('left');changeLyrics('left');" class="house" style="
-    width: 30%;
-    padding-top: 16%;
-    bottom: 0px;
-    position: absolute;
-    display: inline-block;
-    background-image: url(./object_pics/lefthouse.png);
-    background-size: contain;
-    background-repeat: no-repeat;
-    height: 0px;
-    margin-left: 3.21%;
-">
-    <a style="
-    height: 100%;
-    width: 100%;
-    bottom: 0px;
-    position: absolute;
-" href="#"></a>
-    </div>
-
-    <div id="midhouse_container" onclick="changeMusic('mid');changeStory('mid');changeLyrics('mid');" class="house" style="
-    width: 30%;
-    padding-top: 16%;
-    bottom: 0px;
-    position: absolute;
-    display: inline-block;
-    background-image: url(./object_pics/midhouse.png);
-    background-size: contain;
-    background-repeat: no-repeat;
-    height: 0px;
-    margin-left: 38.06%;
-">
-    <a style="
-    height: 100%;
-    width: 100%;
-    bottom: 0px;
-    position: absolute;
-" href="#"></a>
-    </div>
-
-    <div id="righthouse_container" onclick="changeMusic('right');changeStory('right');changeLyrics('right');" class="house" style="
-    width: 30%;
-    padding-top: 16%;
-    bottom: 0px;
-    position: absolute;
-    display: inline-block;
-    background-image: url(./object_pics/righthouse.png);
-    background-size: contain;
-    background-repeat: no-repeat;
-    height: 0px;
-    margin-left: 59.71%;
-">
-    <a style="
-    height: 100%;
-    width: 100%;
-    bottom: 0px;
-    position: absolute;
-" href="#"></a>
-    </div>
-
-    <div id="scooter_container" style="
-    width: 242px;
-    padding-top: 7%;
-    bottom: 0px;
-    position: absolute;
-    display: inline-block;
-    background-image: url(./object_pics/scooter.png);
-    background-size: contain;
-    background-repeat: no-repeat;
-    height: 0px;
-    margin-left: 88.71%;
-">
-    <a style="
-    height: 100%;
-    width: 100%;
-    bottom: 0px;
-    position: absolute;
-" href="#"></a>
-    </div>
-
-    <img id="story_pic" class="story" src="./house_pics/left_house.png" style="width: 250px;margin-top: 5%;margin-left: 3%;opacity: 0;display: none;">
-    <div id="story_div" class="story" style="width: 60%;height: 73%;margin-top: 5%;margin-left: 2%;display: none;opacity: 0;position: absolute;">
-        <p id="story_text">
-            沿著一條彎曲街道漫步向北而行，沿途可見臺灣最早的民設媽祖廟－－開基天后宮及著名古蹟烏鬼井，在這條街道上，可以發現兩旁街巷有一些近二百年歷史的老屋舊宅與現代樓房形成強烈對比，傳統打鐵店、餅店、香舖店分散林立其中，默默地訴說起時代的變遷，這裡是臺南有名的大銃老街（現今臺南市北區自強街）。
-            <br/><br/>
-            大銃街位於禾察港北岸，清朝時期稱為水仔尾街，位於現今北區區公所旁，入口處立有石碑作為紀念，地理範圍大致以現今自強街為主，北接長北街（現今較明顯區域則以公園南路為界），南接西門路三段24巷。
-        </p>
-    </div>
-    
-    
-    
-    </div>
-    <div id="road" style="
-    width: 100%;
-    padding-top: 2.5%;
-    display: inline-block;
-    background-image: url(./object_pics/brick_road.png);
-    background-repeat: no-repeat;
-    background-size: contain;
-    position: absolute;
-    bottom: 0px;
-    height: 0px;
-">
-    </div>
-
-
+<body onmousemove="moveShadow(event)">
+	<h1 id="mousepos"></h1>
+	<h1 id="dbg"></h1>
+	<img class="drop-shadow" src="./cup_misoshiru.png" alt="" style="
+	    position: absolute;
+	    top: 50vh;
+	    left: 50vw;
+	    max-width: 100px;
+	">
+	<img class="drop-shadow" src="./cup_misoshiru.png" alt="" style="
+	    position: absolute;
+	    top: 50vh;
+	    left: 70vw;
+	    max-width: 150px;
+	">
 </body></html>
